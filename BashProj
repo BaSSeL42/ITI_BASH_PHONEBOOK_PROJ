@@ -1,0 +1,187 @@
+#!/bin/bash
+
+
+<<comment
+
+phone book project
+
+comment
+
+
+# (1) list/search
+# (2) ADD
+# (3) EDIT
+# (4) Remove
+# (0) Quit
+
+c=5
+declare -a arr=()
+declare -a name=()
+counter=0
+while [ $c -ne 0 ]
+do
+echo "(1) list/search"
+echo "(2) add"
+echo "(3) edit"
+echo "(4) remove"
+echo "(0) quit"
+
+read -p "Please enter your selection: " sel
+#..................................................#
+#..................................................#
+#......... list/search selection ..................#
+#..................................................#
+#..................................................#
+if [ $sel -eq 1 ] 
+then 
+echo "(1) to search"
+echo "(2) to list"
+
+read -p ">> " sel1
+
+#................ contnt searching ..............#
+if [ $sel1 -eq 1 ] 
+then
+
+echo "(1) search by name"
+echo "(2) search by number"
+
+read -p "Your selection >> " se
+
+if [ $se -eq 1 ]
+then
+read -p "Enter name: " mn
+
+ii=0
+
+while [ $ii -lt $counter ]
+do
+if [ $mn == ${name[$ii]} ]
+then
+echo "------------------------------"
+echo "${name[$ii]} : ${arr[$ii]}"
+echo "------------------------------"
+break
+fi
+let ii=ii+1
+done
+
+elif [ $se -eq 2 ]
+then
+read -p "Enter number: " numb
+
+for i in ${arr[@]} 
+do
+if [ $numb -eq $i ]
+then
+echo "__________________________"
+echo "Number exists"
+echo "__________________________"
+fi
+done
+
+fi
+
+#................... content listing ................#
+elif [ $sel1 -eq 2 ] 
+then
+echo "........................." >  phoneBook.txt
+echo "......Phone Book........." >> phoneBook.txt
+echo -e ".........................\n" >> phoneBook.txt
+op=0
+while [ $op -lt $counter ]
+do
+echo "__________________________"
+echo -e "${name[$op]} : ${arr[$op]} \n" >> phoneBook.txt
+
+echo -e "${name[$op]} : ${arr[$op]} \n" 
+#echo "${name[@]}"
+echo "__________________________"
+let op=op+1
+done
+fi
+
+#..................................................#
+#..................................................#
+# ........... ADD selection .......................#
+#..................................................#
+#..................................................#
+elif [ $sel -eq 2 ]
+then
+read -p "Enter name  : " nam
+read -p "Enter number: " num2
+arr[$counter]=$num2
+name[$counter]=$nam
+let counter=counter+1
+
+#..................................................#
+#..................................................#
+#............. EDIT selection......................#
+#..................................................#
+#..................................................#
+elif [ $sel -eq 3 ]
+then
+
+#read -p "Enter old number: "  old
+read -p "Enter name      :"   enm
+index=0
+while [ $index -lt $counter ]
+do
+if [ ${name[$index]} == $enm ]
+then
+read -p "Enter new number: " new
+arr[$index]=$new
+break
+fi
+let index=index+1
+done
+
+#..................................................#
+#..................................................#
+#............ REMOVE selection ....................#
+#..................................................#
+#..................................................#
+elif [ $sel -eq 4 ]
+then
+read -p "Enter number: " rem
+in=0
+while [ $in -lt $counter ]
+do
+if [ ${arr[$in]} -eq $rem ]
+then
+unset arr[$in]
+unset name[$in]
+let cc=counter-1
+
+if [ $in -ne $cc ]
+then
+let catch=in+1
+arr[$in]=${arr[$catch]}
+name[$in]=${name[$catch]}
+fi
+
+let counter=counter-1
+break
+fi
+let in=in+1
+done
+
+#..................................................#
+#..................................................#
+#............ QUIT selection ......................#
+#..................................................#
+#..................................................#
+elif [ $sel -eq 0 ]
+then 
+#c=0
+break
+fi
+
+
+done
+
+
+
+
+
+
